@@ -10,20 +10,22 @@ import SpriteKit
 
 class GameScene: SKScene {
   // sprites
-  private let playerSprite = SKSpriteNode(imageNamed: "player-submarine")
+  private var playerSprite: SKSpriteNode!
   private var bonusSprite: SKSpriteNode!
   
-  // other assets
+  // ui
+  let scoreLabel = SKLabelNode(fontNamed: "AvenirNextCondensed-Bold")
+  
+  // objects
   let music = SKAudioNode(fileNamed: "cyborg-ninja")
+  var gameTimer: Timer?
   
   //variables
   var touchingPlayer = false
-  var gameTimer: Timer?
-  let scoreLabel = SKLabelNode(fontNamed: "AvenirNextCondensed-Bold")
   var score = 0 {
     didSet { updateUI() }
   }
-  var lives = 0 {
+  var lives = 3 {
     didSet { updateUI() }
   }
   
@@ -43,13 +45,17 @@ class GameScene: SKScene {
     createMusic()
     
     createScoreUI()
+    
+    AnimationsFactory.animateABC(sprite: playerSprite)
   }
   
   // ----------------------------------------
   // MARK: Init
   // ----------------------------------------
   private func setupGameData() {
+    touchingPlayer = false
     score = 0
+    lives = 3
   }
   
   private func createBackground() {
@@ -78,6 +84,7 @@ class GameScene: SKScene {
   }
   
   private func createPlayer() {
+    playerSprite = SKSpriteNode(imageNamed: "player-submarine")
     playerSprite.position = CGPoint(x: 100, y: 200)
     playerSprite.zPosition = 1
     playerSprite.physicsBody = SKPhysicsBody(texture: playerSprite.texture!, size: playerSprite.size)
