@@ -8,51 +8,67 @@
 import GameplayKit
 import SpriteKit
 
-let music = SKAudioNode(fileNamed: "cyborg-ninja")
-
-@objcMembers
-class GameScene: SKScene, SKPhysicsContactDelegate {
+class GameScene: SKScene {
   // sprites
-  let playerSprite = SKSpriteNode(imageNamed: "player-submarine")
-//  let player = SKSpriteNode(imageNamed: "shit-jolie")
-  let enemySprite = SKSpriteNode()
-  let bonusSprite = SKSpriteNode()
+  private let playerSprite = SKSpriteNode(imageNamed: "player-submarine")
+
+  private let enemySprite = SKSpriteNode()
+  private let bonusSprite = SKSpriteNode()
+  
+  // other assets
+  let music = SKAudioNode(fileNamed: "cyborg-ninja")
   
   //variables
   var touchingPlayer = false
   var gameTimer: Timer?
   let scoreLabel = SKLabelNode(fontNamed: "AvenirNextCondensed-Bold")
   var score = 0 {
-    didSet {
-      scoreLabel.text = "SCORE: \(score)"
-    }
+    didSet { updateUI() }
+  }
+  var lives = 0 {
+    didSet { updateUI() }
   }
   
+  func updateUI() {
+    scoreLabel.text = "SCORE: \(score)"
+    // livelabel.text = lives
+  }
   
+  // MARK: Did move
   override func didMove(to view: SKView) {
-    // this method is called when your game scene is ready to run
+    setupGameData()
+    
+    createBackground()
+    createPlayer()
+    
+    createParticles()
+    createMusic()
+    
+    createScoreUI()
+  }
+  
+  // ----------------------------------------
+  // MARK: Init
+  // ----------------------------------------
+  private func setupGameData() {
+    score = 0
+  }
+  
+  private func createBackground() {
+    guard let view = view else { return }
     let background = SKSpriteNode(imageNamed: "water-bg")
     let xPos = view.frame.width / 2
     let yPos = view.frame.height / 2
     background.position = CGPoint(x: xPos, y: yPos)
     background.zPosition = -1
     addChild(background)
+  }
+  
+  private func createMusic() {
     addChild(music)
-    
-//    player.size = CGSize(width: 50, height: 50)
-    playerSprite.position = CGPoint(x: 100, y: 200)
-    playerSprite.zPosition = 1
-    playerSprite.physicsBody = SKPhysicsBody(texture: playerSprite.texture!, size: playerSprite.size)
-    playerSprite.physicsBody?.affectedByGravity = false
-    playerSprite.physicsBody?.categoryBitMask = 1
-    addChild(playerSprite)
-    
-    scoreLabel.zPosition = 2
-    scoreLabel.position = CGPoint(x: 100, y: 320)
-    addChild(scoreLabel)
-    
-    score = 0
-    
+  }
+  
+  private func createParticles() {
     if let particles = SKEmitterNode(fileNamed: "Bubbles") {
       particles.advanceSimulationTime(10)
       particles.position.x = 612
@@ -63,8 +79,60 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     physicsWorld.contactDelegate = self
   }
   
+  private func createPlayer() {
+    playerSprite.position = CGPoint(x: 100, y: 200)
+    playerSprite.zPosition = 1
+    playerSprite.physicsBody = SKPhysicsBody(texture: playerSprite.texture!, size: playerSprite.size)
+    playerSprite.physicsBody?.affectedByGravity = false
+    playerSprite.physicsBody?.categoryBitMask = 1
+    addChild(playerSprite)
+  }
+  
+  private func createScoreUI() {
+    scoreLabel.zPosition = 2
+    scoreLabel.position = CGPoint(x: 100, y: 320)
+    addChild(scoreLabel)
+  }
+  
+  // ----------------------------------------
+  // MARK: Creation
+  // ----------------------------------------
+  @objc private func createEnemy() {
+    createSprite(sprite: enemySprite, image: "fish", name: "enemy")
+    enemySprite.physicsBody = SKPhysicsBody(texture: enemySprite.texture!, size: enemySprite.size)
+    enemySprite.physicsBody?.affectedByGravity = false
+    enemySprite.physicsBody?.velocity = CGVector(dx: -500, dy: 0)
+    enemySprite.physicsBody?.linearDamping = 0
+    enemySprite.physicsBody?.contactTestBitMask = 1
+    enemySprite.physicsBody?.categoryBitMask = 0
+  }
+  
+  private func createBonus() {
+    createSprite(sprite: bonusSprite, image: "coin", name: "bonus")
+    bonusSprite.physicsBody = SKPhysicsBody(texture: bonusSprite.texture!, size: bonusSprite.size)
+    bonusSprite.physicsBody?.affectedByGravity = false
+    bonusSprite.physicsBody?.velocity = CGVector(dx: -300, dy: 0)
+    bonusSprite.physicsBody?.linearDamping = 0
+    bonusSprite.physicsBody?.contactTestBitMask = 1
+    bonusSprite.physicsBody?.categoryBitMask = 0
+    bonusSprite.physicsBody?.collisionBitMask = 0
+  }
+  
+  private func createSprite(sprite: SKSpriteNode, image: String, name: String) {
+    let randomDistribution = GKRandomDistribution(lowestValue: -350, highestValue: 350)
+    let texture = SKTexture(imageNamed: image)
+    sprite.texture = texture
+    sprite.size = texture.size()
+    sprite.position = CGPoint(x: 700, y: randomDistribution.nextInt())
+    sprite.name = name
+    sprite.zPosition = 1
+    addChild(sprite)
+  }
+  
+  // ----------------------------------------
+  // MARK: Touch
+  // ----------------------------------------
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    // this method is called when the user touches the screen
     guard let touch = touches.first else { return }
     let location = touch.location(in: self)
     let tappedNodes = nodes(at: location)
@@ -85,6 +153,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     touchingPlayer = false
   }
   
+  // ----------------------------------------
+  // MARK: Update
+  // ----------------------------------------
   override func update(_ currentTime: TimeInterval) {
     // this method is called before each frame is rendered
 //     guard let view = view else { return }
@@ -108,36 +179,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
   }
   
-  func createEnemy() {
-    createSprite(sprite: enemySprite, image: "fish", name: "enemy")
-    enemySprite.physicsBody = SKPhysicsBody(texture: enemySprite.texture!, size: enemySprite.size)
-    enemySprite.physicsBody?.affectedByGravity = false
-    enemySprite.physicsBody?.velocity = CGVector(dx: -500, dy: 0)
-    enemySprite.physicsBody?.linearDamping = 0
-    enemySprite.physicsBody?.contactTestBitMask = 1
-    enemySprite.physicsBody?.categoryBitMask = 0
-  }
-  
-  func createBonus() {
-    createSprite(sprite: bonusSprite, image: "coin", name: "bonus")
-    bonusSprite.physicsBody = SKPhysicsBody(texture: bonusSprite.texture!, size: bonusSprite.size)
-    bonusSprite.physicsBody?.affectedByGravity = false
-    bonusSprite.physicsBody?.velocity = CGVector(dx: -300, dy: 0)
-    bonusSprite.physicsBody?.linearDamping = 0
-    bonusSprite.physicsBody?.contactTestBitMask = 1
-    bonusSprite.physicsBody?.categoryBitMask = 0
-    bonusSprite.physicsBody?.collisionBitMask = 0
-  }
-  
-  func createSprite(sprite: SKSpriteNode, image: String, name: String) {
-    let randomDistribution = GKRandomDistribution(lowestValue: -350, highestValue: 350)
-    let sprite = SKSpriteNode(imageNamed: image)
-    sprite.position = CGPoint(x: 700, y: randomDistribution.nextInt())
-    sprite.name = name
-    sprite.zPosition = 1
-    addChild(sprite)
-  }
-  
+}
+
+// ----------------------------------------
+// MARK: Collision
+// ----------------------------------------
+extension GameScene: SKPhysicsContactDelegate {
   func didBegin(_ contact: SKPhysicsContact) {
     guard let nodeA = contact.bodyA.node else { return }
     guard let nodeB = contact.bodyB.node else { return }
@@ -149,7 +196,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
   }
   
-  func playerHit(_ node: SKNode) {
+  private func playerHit(_ node: SKNode) {
     if node.name == "bonus" {
       score += 1
       node.removeFromParent()
@@ -160,7 +207,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       particles.zPosition = 3
       addChild(particles)
     }
-
+    
     playerSprite.removeFromParent()
     music.removeFromParent()
     let sound = SKAction.playSoundFileNamed("explosion.wav", waitForCompletion: false)
@@ -182,6 +229,5 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.view?.presentScene(scene)
       }
     }
-
   }
 }
