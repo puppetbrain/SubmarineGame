@@ -107,12 +107,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   func createEnemy() {
     createBonus()
     
-    let randomDistribution = GKRandomDistribution(lowestValue: -350, highestValue: 350)
-    let sprite = SKSpriteNode(imageNamed: "fish")
-    sprite.position = CGPoint(x: 700, y: randomDistribution.nextInt())
-    sprite.name = "enemy"
-    sprite.zPosition = 1
-    addChild(sprite)
+//    let randomDistribution = GKRandomDistribution(lowestValue: -350, highestValue: 350)
+//    let sprite = SKSpriteNode(imageNamed: "fish")
+//    sprite.position = CGPoint(x: 700, y: randomDistribution.nextInt())
+//    sprite.name = "enemy"
+//    sprite.zPosition = 1
+//    addChild(sprite)
     sprite.physicsBody = SKPhysicsBody(texture: sprite.texture!, size: sprite.size)
     sprite.physicsBody?.affectedByGravity = false
     sprite.physicsBody?.velocity = CGVector(dx: -500, dy: 0)
@@ -135,6 +135,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     sprite.physicsBody?.contactTestBitMask = 1
     sprite.physicsBody?.categoryBitMask = 0
     sprite.physicsBody?.collisionBitMask = 0
+  }
+  
+  func createSprite(image: String, name: String) {
+    let randomDistribution = GKRandomDistribution(lowestValue: -350, highestValue: 350)
+    let sprite = SKSpriteNode(imageNamed: image)
+    sprite.position = CGPoint(x: 700, y: randomDistribution.nextInt())
+    sprite.name = name
+    sprite.zPosition = 1
+    addChild(sprite)
   }
   
   func didBegin(_ contact: SKPhysicsContact) {
