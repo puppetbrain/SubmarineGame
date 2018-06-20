@@ -12,9 +12,13 @@ let music = SKAudioNode(fileNamed: "cyborg-ninja")
 
 @objcMembers
 class GameScene: SKScene, SKPhysicsContactDelegate {
-  
-  let player = SKSpriteNode(imageNamed: "player-submarine")
+  // sprites
+  let playerSprite = SKSpriteNode(imageNamed: "player-submarine")
 //  let player = SKSpriteNode(imageNamed: "shit-jolie")
+  let enemySprite = SKSpriteNode()
+  let bonusSprite = SKSpriteNode()
+  
+  //variables
   var touchingPlayer = false
   var gameTimer: Timer?
   let scoreLabel = SKLabelNode(fontNamed: "AvenirNextCondensed-Bold")
@@ -36,12 +40,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     addChild(music)
     
 //    player.size = CGSize(width: 50, height: 50)
-    player.position = CGPoint(x: 100, y: 200)
-    player.zPosition = 1
-    player.physicsBody = SKPhysicsBody(texture: player.texture!, size: player.size)
-    player.physicsBody?.affectedByGravity = false
-    player.physicsBody?.categoryBitMask = 1
-    addChild(player)
+    playerSprite.position = CGPoint(x: 100, y: 200)
+    playerSprite.zPosition = 1
+    playerSprite.physicsBody = SKPhysicsBody(texture: playerSprite.texture!, size: playerSprite.size)
+    playerSprite.physicsBody?.affectedByGravity = false
+    playerSprite.physicsBody?.categoryBitMask = 1
+    addChild(playerSprite)
     
     scoreLabel.zPosition = 2
     scoreLabel.position = CGPoint(x: 100, y: 320)
@@ -64,7 +68,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     guard let touch = touches.first else { return }
     let location = touch.location(in: self)
     let tappedNodes = nodes(at: location)
-    if tappedNodes.contains(player) {
+    if tappedNodes.contains(playerSprite) {
       touchingPlayer = true
     }
   }
@@ -73,7 +77,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     guard touchingPlayer else { return }
     guard let touch = touches.first else { return }
     let location = touch.location(in: self)
-    player.position = location
+    playerSprite.position = location
   }
   
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -85,16 +89,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // this method is called before each frame is rendered
 //     guard let view = view else { return }
     
-    if player.position.x < -600 {
-      player.position.x = -600
-    } else if player.position.x > 600  {
-      player.position.x = 600
+    if playerSprite.position.x < -600 {
+      playerSprite.position.x = -600
+    } else if playerSprite.position.x > 600  {
+      playerSprite.position.x = 600
     }
     
-    if player.position.y < -375 {
-      player.position.y = -375
-    } else if player.position.y > 375 {
-      player.position.y = 375
+    if playerSprite.position.y < -375 {
+      playerSprite.position.y = -375
+    } else if playerSprite.position.y > 375 {
+      playerSprite.position.y = 375
     }
     
     for node in children {
@@ -105,39 +109,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   }
   
   func createEnemy() {
-    createBonus()
-    
-//    let randomDistribution = GKRandomDistribution(lowestValue: -350, highestValue: 350)
-//    let sprite = SKSpriteNode(imageNamed: "fish")
-//    sprite.position = CGPoint(x: 700, y: randomDistribution.nextInt())
-//    sprite.name = "enemy"
-//    sprite.zPosition = 1
-//    addChild(sprite)
-    sprite.physicsBody = SKPhysicsBody(texture: sprite.texture!, size: sprite.size)
-    sprite.physicsBody?.affectedByGravity = false
-    sprite.physicsBody?.velocity = CGVector(dx: -500, dy: 0)
-    sprite.physicsBody?.linearDamping = 0
-    sprite.physicsBody?.contactTestBitMask = 1
-    sprite.physicsBody?.categoryBitMask = 0
+    createSprite(sprite: enemySprite, image: "fish", name: "enemy")
+    enemySprite.physicsBody = SKPhysicsBody(texture: enemySprite.texture!, size: enemySprite.size)
+    enemySprite.physicsBody?.affectedByGravity = false
+    enemySprite.physicsBody?.velocity = CGVector(dx: -500, dy: 0)
+    enemySprite.physicsBody?.linearDamping = 0
+    enemySprite.physicsBody?.contactTestBitMask = 1
+    enemySprite.physicsBody?.categoryBitMask = 0
   }
   
   func createBonus() {
-    let randomDistribution = GKRandomDistribution(lowestValue: -350, highestValue: 350)
-    let sprite = SKSpriteNode(imageNamed: "coin")
-    sprite.position = CGPoint(x: 700, y: randomDistribution.nextInt())
-    sprite.name = "bonus"
-    sprite.zPosition = 1
-    addChild(sprite)
-    sprite.physicsBody = SKPhysicsBody(texture: sprite.texture!, size: sprite.size)
-    sprite.physicsBody?.affectedByGravity = false
-    sprite.physicsBody?.velocity = CGVector(dx: -300, dy: 0)
-    sprite.physicsBody?.linearDamping = 0
-    sprite.physicsBody?.contactTestBitMask = 1
-    sprite.physicsBody?.categoryBitMask = 0
-    sprite.physicsBody?.collisionBitMask = 0
+    createSprite(sprite: bonusSprite, image: "coin", name: "bonus")
+    bonusSprite.physicsBody = SKPhysicsBody(texture: bonusSprite.texture!, size: bonusSprite.size)
+    bonusSprite.physicsBody?.affectedByGravity = false
+    bonusSprite.physicsBody?.velocity = CGVector(dx: -300, dy: 0)
+    bonusSprite.physicsBody?.linearDamping = 0
+    bonusSprite.physicsBody?.contactTestBitMask = 1
+    bonusSprite.physicsBody?.categoryBitMask = 0
+    bonusSprite.physicsBody?.collisionBitMask = 0
   }
   
-  func createSprite(image: String, name: String) {
+  func createSprite(sprite: SKSpriteNode, image: String, name: String) {
     let randomDistribution = GKRandomDistribution(lowestValue: -350, highestValue: 350)
     let sprite = SKSpriteNode(imageNamed: image)
     sprite.position = CGPoint(x: 700, y: randomDistribution.nextInt())
@@ -150,7 +142,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     guard let nodeA = contact.bodyA.node else { return }
     guard let nodeB = contact.bodyB.node else { return }
     
-    if nodeA == player {
+    if nodeA == playerSprite {
       playerHit(nodeB)
     } else {
       playerHit(nodeA)
@@ -164,12 +156,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
       return
     }
     if let particles = SKEmitterNode(fileNamed: "Explosion") {
-      particles.position = player.position
+      particles.position = playerSprite.position
       particles.zPosition = 3
       addChild(particles)
     }
 
-    player.removeFromParent()
+    playerSprite.removeFromParent()
     music.removeFromParent()
     let sound = SKAction.playSoundFileNamed("explosion.wav", waitForCompletion: false)
     run(sound)
