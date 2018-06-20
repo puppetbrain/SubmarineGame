@@ -11,9 +11,7 @@ import SpriteKit
 class GameScene: SKScene {
   // sprites
   private let playerSprite = SKSpriteNode(imageNamed: "player-submarine")
-
-  private let enemySprite = SKSpriteNode()
-  private let bonusSprite = SKSpriteNode()
+  private var bonusSprite: SKSpriteNode!
   
   // other assets
   let music = SKAudioNode(fileNamed: "cyborg-ninja")
@@ -74,7 +72,7 @@ class GameScene: SKScene {
       particles.position.x = 612
       addChild(particles)
     }
-    gameTimer = Timer.scheduledTimer(timeInterval: 0.35, target: self, selector: #selector(createEnemy), userInfo: nil, repeats: true)
+    gameTimer = Timer.scheduledTimer(timeInterval: 0.35, target: self, selector: #selector(handleTimer), userInfo: nil, repeats: true)
     
     physicsWorld.contactDelegate = self
   }
@@ -97,18 +95,27 @@ class GameScene: SKScene {
   // ----------------------------------------
   // MARK: Creation
   // ----------------------------------------
-  @objc private func createEnemy() {
-    createSprite(sprite: enemySprite, image: "fish", name: "enemy")
-    enemySprite.physicsBody = SKPhysicsBody(texture: enemySprite.texture!, size: enemySprite.size)
-    enemySprite.physicsBody?.affectedByGravity = false
-    enemySprite.physicsBody?.velocity = CGVector(dx: -500, dy: 0)
-    enemySprite.physicsBody?.linearDamping = 0
-    enemySprite.physicsBody?.contactTestBitMask = 1
-    enemySprite.physicsBody?.categoryBitMask = 0
+  @objc private func handleTimer() {
+    createEnemy()
+    createBonus()
+  }
+  
+  private func createEnemy() {
+    let sprite = SKSpriteNode(imageNamed: "fish")
+    setupSprite(sprite: sprite, name: "enemy")
+    
+    sprite.physicsBody = SKPhysicsBody(texture: sprite.texture!, size: sprite.size)
+    sprite.physicsBody?.affectedByGravity = false
+    sprite.physicsBody?.velocity = CGVector(dx: -500, dy: 0)
+    sprite.physicsBody?.linearDamping = 0
+    sprite.physicsBody?.contactTestBitMask = 1
+    sprite.physicsBody?.categoryBitMask = 0
   }
   
   private func createBonus() {
-    createSprite(sprite: bonusSprite, image: "coin", name: "bonus")
+    bonusSprite = SKSpriteNode(imageNamed: "coin")
+    setupSprite(sprite: bonusSprite, name: "bonus")
+    
     bonusSprite.physicsBody = SKPhysicsBody(texture: bonusSprite.texture!, size: bonusSprite.size)
     bonusSprite.physicsBody?.affectedByGravity = false
     bonusSprite.physicsBody?.velocity = CGVector(dx: -300, dy: 0)
@@ -118,11 +125,8 @@ class GameScene: SKScene {
     bonusSprite.physicsBody?.collisionBitMask = 0
   }
   
-  private func createSprite(sprite: SKSpriteNode, image: String, name: String) {
+  private func setupSprite(sprite: SKSpriteNode, name: String) {
     let randomDistribution = GKRandomDistribution(lowestValue: -350, highestValue: 350)
-    let texture = SKTexture(imageNamed: image)
-    sprite.texture = texture
-    sprite.size = texture.size()
     sprite.position = CGPoint(x: 700, y: randomDistribution.nextInt())
     sprite.name = name
     sprite.zPosition = 1
