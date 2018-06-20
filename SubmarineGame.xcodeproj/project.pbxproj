@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		A8306CB120D7F5CF00A2FB01 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8306CB020D7F5CF00A2FB01 /* AppDelegate.swift */; };
-		A8306CB320D7F5CF00A2FB01 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = A8306CB220D7F5CF00A2FB01 /* GameScene.sks */; };
-		A8306CB520D7F5CF00A2FB01 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = A8306CB420D7F5CF00A2FB01 /* Actions.sks */; };
 		A8306CB720D7F5CF00A2FB01 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8306CB620D7F5CF00A2FB01 /* GameScene.swift */; };
 		A8306CB920D7F5CF00A2FB01 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8306CB820D7F5CF00A2FB01 /* GameViewController.swift */; };
 		A8306CBC20D7F5CF00A2FB01 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A8306CBA20D7F5CF00A2FB01 /* Main.storyboard */; };
@@ -25,8 +23,6 @@
 /* Begin PBXFileReference section */
 		A8306CAD20D7F5CF00A2FB01 /* SubmarineGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SubmarineGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8306CB020D7F5CF00A2FB01 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A8306CB220D7F5CF00A2FB01 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
-		A8306CB420D7F5CF00A2FB01 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		A8306CB620D7F5CF00A2FB01 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		A8306CB820D7F5CF00A2FB01 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		A8306CBB20D7F5CF00A2FB01 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -71,21 +67,51 @@
 			isa = PBXGroup;
 			children = (
 				A8306CB020D7F5CF00A2FB01 /* AppDelegate.swift */,
-				A8306CB220D7F5CF00A2FB01 /* GameScene.sks */,
-				A8306CB420D7F5CF00A2FB01 /* Actions.sks */,
-				A8306CB620D7F5CF00A2FB01 /* GameScene.swift */,
-				A85F5FEC20DA85F900C57F09 /* Explosion.sks */,
-				A85F5FE820DA7ECB00C57F09 /* cyborg-ninja.mp3 */,
-				A85F5FEA20DA7F7C00C57F09 /* explosion.wav */,
-				A86D4C0620D98D21002805FB /* CollScene.swift */,
-				A86D4C0420D944F9002805FB /* Bubbles.sks */,
 				A8306CB820D7F5CF00A2FB01 /* GameViewController.swift */,
+				A8728BEB20DAD093009DA44A /* Scenes */,
+				A8728BEC20DAD099009DA44A /* Effects */,
+				A8728BEA20DAD07D009DA44A /* Assets */,
 				A8306CBA20D7F5CF00A2FB01 /* Main.storyboard */,
 				A8306CBD20D7F5D000A2FB01 /* Assets.xcassets */,
 				A8306CBF20D7F5D000A2FB01 /* LaunchScreen.storyboard */,
 				A8306CC220D7F5D000A2FB01 /* Info.plist */,
 			);
 			path = SubmarineGame;
+			sourceTree = "<group>";
+		};
+		A8728BE920DAD077009DA44A /* sounds */ = {
+			isa = PBXGroup;
+			children = (
+				A85F5FE820DA7ECB00C57F09 /* cyborg-ninja.mp3 */,
+				A85F5FEA20DA7F7C00C57F09 /* explosion.wav */,
+			);
+			path = sounds;
+			sourceTree = "<group>";
+		};
+		A8728BEA20DAD07D009DA44A /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				A8728BE920DAD077009DA44A /* sounds */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		A8728BEB20DAD093009DA44A /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				A8306CB620D7F5CF00A2FB01 /* GameScene.swift */,
+				A86D4C0620D98D21002805FB /* CollScene.swift */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		A8728BEC20DAD099009DA44A /* Effects */ = {
+			isa = PBXGroup;
+			children = (
+				A85F5FEC20DA85F900C57F09 /* Explosion.sks */,
+				A86D4C0420D944F9002805FB /* Bubbles.sks */,
+			);
+			path = Effects;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -149,11 +175,9 @@
 				A8306CBC20D7F5CF00A2FB01 /* Main.storyboard in Resources */,
 				A86D4C0520D944F9002805FB /* Bubbles.sks in Resources */,
 				A85F5FEB20DA7F7C00C57F09 /* explosion.wav in Resources */,
-				A8306CB320D7F5CF00A2FB01 /* GameScene.sks in Resources */,
 				A8306CBE20D7F5D000A2FB01 /* Assets.xcassets in Resources */,
 				A8306CC120D7F5D000A2FB01 /* LaunchScreen.storyboard in Resources */,
 				A85F5FE920DA7ECB00C57F09 /* cyborg-ninja.mp3 in Resources */,
-				A8306CB520D7F5CF00A2FB01 /* Actions.sks in Resources */,
 				A85F5FED20DA85F900C57F09 /* Explosion.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
