@@ -10,20 +10,25 @@ import SpriteKit
 
 class GameScene: SKScene {
   // sprites
-  private let playerSprite = SKSpriteNode(imageNamed: "player-submarine")
+  private var playerSprite: SKSpriteNode!
   private var bonusSprite: SKSpriteNode!
   
-  // other assets
+  // ui
+  let scoreLabel = SKLabelNode(fontNamed: "AvenirNextCondensed-Bold")
+  
+  // objects
   let music = SKAudioNode(fileNamed: "cyborg-ninja")
+  let finishSound = SoundFactory.finishSound()
+  let bonusSound = SoundFactory.bonusSound()
+  var gameTimer: Timer?
   
   //variables
+  var isGameInPlay = false
   var touchingPlayer = false
-  var gameTimer: Timer?
-  let scoreLabel = SKLabelNode(fontNamed: "AvenirNextCondensed-Bold")
   var score = 0 {
     didSet { updateUI() }
   }
-  var lives = 0 {
+  var lives = 3 {
     didSet { updateUI() }
   }
   
@@ -43,13 +48,25 @@ class GameScene: SKScene {
     createMusic()
     
     createScoreUI()
+    
+    AnimationsFactory.animateABC(sprite: playerSprite)
+    
+    isGameInPlay = true
   }
   
   // ----------------------------------------
   // MARK: Init
   // ----------------------------------------
   private func setupGameData() {
+    touchingPlayer = false
     score = 0
+    lives = 3
+  }
+  
+  private func reset() {
+    // reset data
+    // remove stuff IF not exists
+    // reposition stuff
   }
   
   private func createBackground() {
@@ -78,6 +95,7 @@ class GameScene: SKScene {
   }
   
   private func createPlayer() {
+    playerSprite = SKSpriteNode(imageNamed: "player-submarine")
     playerSprite.position = CGPoint(x: 100, y: 200)
     playerSprite.zPosition = 1
     playerSprite.physicsBody = SKPhysicsBody(texture: playerSprite.texture!, size: playerSprite.size)
@@ -106,7 +124,7 @@ class GameScene: SKScene {
     
     sprite.physicsBody = SKPhysicsBody(texture: sprite.texture!, size: sprite.size)
     sprite.physicsBody?.affectedByGravity = false
-    sprite.physicsBody?.velocity = CGVector(dx: -500, dy: 0)
+    sprite.physicsBody?.velocity = CGVector(dx: -300, dy: 0)
     sprite.physicsBody?.linearDamping = 0
     sprite.physicsBody?.contactTestBitMask = 1
     sprite.physicsBody?.categoryBitMask = 0
@@ -200,22 +218,10 @@ extension GameScene: SKPhysicsContactDelegate {
     }
   }
   
-  private func playerHit(_ node: SKNode) {
-    if node.name == "bonus" {
-      score += 1
-      node.removeFromParent()
-      return
-    }
-    if let particles = SKEmitterNode(fileNamed: "Explosion") {
-      particles.position = playerSprite.position
-      particles.zPosition = 3
-      addChild(particles)
-    }
-    
+  private func gameOver() {
     playerSprite.removeFromParent()
     music.removeFromParent()
-    let sound = SKAction.playSoundFileNamed("explosion.wav", waitForCompletion: false)
-    run(sound)
+    run(SoundFactory.finishSound())
     let gameOver = SKSpriteNode(imageNamed: "gameOver-3")
     guard let view = view else { return }
     gameOver.position = CGPoint(x: view.frame.width / 2, y: view.frame.height / 2)
@@ -224,14 +230,32 @@ extension GameScene: SKPhysicsContactDelegate {
     
     // wait for two seconds then run some code
     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+      print("jjdjdjdjdjd")
       // create a new scene from GameScene.sks
-      if let scene = GameScene(fileNamed: "GameScene") {
-        // make it stretch to fill all available space
+     
+      if self.isGameInPlay {
+        let scene = GameScene(size: CGSize(width: 667, height: 375))
         scene.scaleMode = .aspectFill
-        
-        // present it immediately
-        self.view?.presentScene(scene)
+        view.presentScene(scene, transition: SKTransition.doorsCloseHorizontal(withDuration: 2))
+        self.isGameInPlay = false
       }
     }
+  }
+  
+  private func playerHit(_ node: SKNode) {
+    if node.name == "bonus" {
+      score += 1
+      node.removeFromParent()
+      run(SoundFactory.bonusSound())
+      return
+    }
+    if let particles = SKEmitterNode(fileNamed: "Explosion") {
+      particles.position = playerSprite.position
+      particles.zPosition = 3
+      addChild(particles)
+    }
+    
+    // game over
+    gameOver()
   }
 }

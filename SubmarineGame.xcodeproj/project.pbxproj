@@ -18,6 +18,10 @@
 		A85F5FED20DA85F900C57F09 /* Explosion.sks in Resources */ = {isa = PBXBuildFile; fileRef = A85F5FEC20DA85F900C57F09 /* Explosion.sks */; };
 		A86D4C0520D944F9002805FB /* Bubbles.sks in Resources */ = {isa = PBXBuildFile; fileRef = A86D4C0420D944F9002805FB /* Bubbles.sks */; };
 		A86D4C0720D98D21002805FB /* CollScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A86D4C0620D98D21002805FB /* CollScene.swift */; };
+		A8728BEE20DAD59E009DA44A /* AnimationsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8728BED20DAD59E009DA44A /* AnimationsFactory.swift */; };
+		A8AF801B20DBAD8C00E51573 /* coin.wav in Resources */ = {isa = PBXBuildFile; fileRef = A8AF801A20DBAD8C00E51573 /* coin.wav */; };
+		A8B10F8E20DBD14C007F54BC /* SoundFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B10F8D20DBD14C007F54BC /* SoundFactory.swift */; };
+		A8B10F9020DBD338007F54BC /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B10F8F20DBD338007F54BC /* GameOverScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +38,10 @@
 		A85F5FEC20DA85F900C57F09 /* Explosion.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Explosion.sks; sourceTree = "<group>"; };
 		A86D4C0420D944F9002805FB /* Bubbles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Bubbles.sks; sourceTree = "<group>"; };
 		A86D4C0620D98D21002805FB /* CollScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollScene.swift; sourceTree = "<group>"; };
+		A8728BED20DAD59E009DA44A /* AnimationsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationsFactory.swift; sourceTree = "<group>"; };
+		A8AF801A20DBAD8C00E51573 /* coin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = coin.wav; sourceTree = "<group>"; };
+		A8B10F8D20DBD14C007F54BC /* SoundFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFactory.swift; sourceTree = "<group>"; };
+		A8B10F8F20DBD338007F54BC /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +90,7 @@
 		A8728BE920DAD077009DA44A /* sounds */ = {
 			isa = PBXGroup;
 			children = (
+				A8AF801A20DBAD8C00E51573 /* coin.wav */,
 				A85F5FE820DA7ECB00C57F09 /* cyborg-ninja.mp3 */,
 				A85F5FEA20DA7F7C00C57F09 /* explosion.wav */,
 			);
@@ -100,7 +109,10 @@
 			isa = PBXGroup;
 			children = (
 				A8306CB620D7F5CF00A2FB01 /* GameScene.swift */,
+				A8B10F8F20DBD338007F54BC /* GameOverScene.swift */,
 				A86D4C0620D98D21002805FB /* CollScene.swift */,
+				A8728BED20DAD59E009DA44A /* AnimationsFactory.swift */,
+				A8B10F8D20DBD14C007F54BC /* SoundFactory.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -177,6 +189,7 @@
 				A85F5FEB20DA7F7C00C57F09 /* explosion.wav in Resources */,
 				A8306CBE20D7F5D000A2FB01 /* Assets.xcassets in Resources */,
 				A8306CC120D7F5D000A2FB01 /* LaunchScreen.storyboard in Resources */,
+				A8AF801B20DBAD8C00E51573 /* coin.wav in Resources */,
 				A85F5FE920DA7ECB00C57F09 /* cyborg-ninja.mp3 in Resources */,
 				A85F5FED20DA85F900C57F09 /* Explosion.sks in Resources */,
 			);
@@ -189,7 +202,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8728BEE20DAD59E009DA44A /* AnimationsFactory.swift in Sources */,
 				A8306CB720D7F5CF00A2FB01 /* GameScene.swift in Sources */,
+				A8B10F9020DBD338007F54BC /* GameOverScene.swift in Sources */,
+				A8B10F8E20DBD14C007F54BC /* SoundFactory.swift in Sources */,
 				A8306CB920D7F5CF00A2FB01 /* GameViewController.swift in Sources */,
 				A86D4C0720D98D21002805FB /* CollScene.swift in Sources */,
 				A8306CB120D7F5CF00A2FB01 /* AppDelegate.swift in Sources */,
@@ -269,7 +285,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -323,7 +339,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -339,6 +355,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZY23T3JAP3;
 				INFOPLIST_FILE = SubmarineGame/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -357,6 +374,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZY23T3JAP3;
 				INFOPLIST_FILE = SubmarineGame/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
