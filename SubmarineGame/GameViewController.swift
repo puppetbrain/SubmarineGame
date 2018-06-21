@@ -9,7 +9,7 @@ class GameViewController: UIViewController {
     super.viewDidLoad()
     
     let scene = GameScene(size: CGSize(width: 667, height: 375))
-    //    scene.anchorPoint = CGPoint(x: 0.5, y: 0.5) // mid
+//        scene.anchorPoint = CGPoint(x: 0.5, y: 0.5) // mid
     scene.anchorPoint = CGPoint(x: 0, y: 0) // bottom left
     let skView = view as! SKView
     skView.showsNodeCount = true
